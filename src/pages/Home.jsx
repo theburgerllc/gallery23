@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles, Eye, Heart } from 'lucide-react';
-import FramerPixelHero from '../components/FramerPixelHero/FramerPixelHero';
+import CanvasPixelHero from '../components/CanvasPixelHero/CanvasPixelHero';
 
 const Home = () => {
   const featuredWorks = [
@@ -52,11 +52,12 @@ const Home = () => {
 
   return (
     <div className="relative">
-      {/* Framer Pixel Transition Hero */}
-      <FramerPixelHero
-        gridSize={30}
+      {/* Canvas Pixel Reveal Hero - 60fps Performance */}
+      <CanvasPixelHero
+        imageSrc="/images/hero-bg.webp"
+        pixelSize={30}
         pixelColor="#72BDC2"
-        animationDuration={0.6}
+        duration={800}
         firstContent={
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold gradient-text leading-none tracking-tighter">

@@ -1,0 +1,76 @@
+/* src/components/CanvasPixelHero/CanvasPixelHero.module.css */
+
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  background: #21221F; /* primary-dark fallback */
+}
+
+.hero:focus {
+  outline: 3px solid rgba(114, 189, 194, 0.3);
+  outline-offset: 4px;
+}
+
+/* Canvas layers */
+.bgCanvas,
+.pixelCanvas,
+.contentCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.bgCanvas {
+  z-index: 1;
+  /* Background image layer */
+}
+
+.pixelCanvas {
+  z-index: 2;
+  /* Pixel grid overlay */
+  mix-blend-mode: normal;
+}
+
+.contentCanvas {
+  z-index: 3;
+  /* Content rendering layer (future use) */
+  pointer-events: none;
+}
+
+/* DOM content overlays */
+.contentLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  will-change: opacity;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero {
+    min-height: 100vh;
+  }
+
+  .contentLayer {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .contentLayer {
+    padding: 1rem;
+  }
+}
