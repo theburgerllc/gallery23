@@ -1,0 +1,99 @@
+{
+  "name": "art23-website",
+  "description": "Art23 Gallery Website - Next.js on Vercel",
+  "version": "1.0.0",
+  
+  "permissions": {
+    "allow": [
+      "Read(**)",
+      "Write(./app/**)",
+      "Write(./components/**)",
+      "Write(./lib/**)",
+      "Write(./tests/**)",
+      "Write(./prisma/**)",
+      "Edit(./app/**)",
+      "Edit(./components/**)",
+      "Edit(./lib/**)",
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "Bash(git *)",
+      "Bash(vercel *)",
+      "Bash(supabase *)",
+      "Bash(prisma *)",
+      "Bash(playwright *)",
+      "Bash(vitest *)",
+      "Bash(gh *)",
+      "Bash(curl *)",
+      "Bash(jq *)"
+    ],
+    "deny": [
+      "Read(.env*)",
+      "Read(./secrets/**)",
+      "Write(.env*)",
+      "Write(./secrets/**)",
+      "Bash(rm -rf *)",
+      "Bash(sudo *)"
+    ]
+  },
+  
+  "env": {
+    "NODE_ENV": "development",
+    "CLAUDE_CODE_PROJECT": "art23",
+    "DEFAULT_BRANCH": "main",
+    "PREVIEW_URL_PATTERN": "art23-*-*.vercel.app",
+    "PRODUCTION_URL": "https://art23.com"
+  },
+  
+  "tools": {
+    "default_timeout": 300,
+    "parallel_execution": true,
+    "max_parallel_tools": 4
+  },
+  
+  "subagents": {
+    "auto_delegate": true,
+    "delegation_strategy": "best_match",
+    "fallback_model": "sonnet"
+  },
+  
+  "deployment": {
+    "platform": "vercel",
+    "environments": ["preview", "production"],
+    "auto_deploy": {
+      "branches": {
+        "main": "production",
+        "*": "preview"
+      }
+    },
+    "rollback_on_failure": true,
+    "health_check_timeout": 120
+  },
+  
+  "testing": {
+    "pre_commit": true,
+    "coverage_threshold": 80,
+    "fail_on_warnings": false,
+    "test_runner": "vitest",
+    "e2e_runner": "playwright"
+  },
+  
+  "monitoring": {
+    "sentry_enabled": true,
+    "analytics": "vercel",
+    "uptime": "better-stack",
+    "log_level": "info"
+  },
+  
+  "database": {
+    "provider": "supabase",
+    "orm": "prisma",
+    "migrations": "automatic"
+  },
+  
+  "integrations": {
+    "media": "cloudinary",
+    "payments": "stripe",
+    "auth": "supabase",
+    "email": "resend"
+  }
+}

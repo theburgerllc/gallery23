@@ -1,0 +1,161 @@
+{
+  "hooks": [
+    {
+      "name": "pre-deployment-validation",
+      "description": "Runs before any deployment starts",
+      "trigger": {
+        "command": ["npm run deploy:*", "kubectl apply", "terraform apply"],
+        "phase": "before"
+      },
+      "actions": [
+        {
+          "type": "command",
+          "command": "git status --porcelain",
+          "failOnError": true,
+          "errorMessage": "Uncommitted changes detected. Please commit before deploying."
+        },
+        {
+          "type": "delegate",
+          "agent": "code-validator",
+          "message": "Validate code before deployment"
+        }
+      ]
+    },
+    
+    {
+      "name": "post-docker-build",
+      "description": "Scans Docker images after build",
+      "trigger": {
+        "command": ["docker build"],
+        "phase": "after"
+      },
+      "actions": [
+        {
+          "type": "command",
+          "command": "docker scan $LAST_BUILT_IMAGE",
+          "continueOnError": true
+        }
+      ]
+    },
+    
+    {
+      "name": "post-deployment-monitoring",
+      "description": "Starts monitoring after deployment",
+      "trigger": {
+        "command": ["kubectl rollout status"],
+        "phase": "after",
+        "onSuccess": true
+      },
+      "actions": [
+        {
+          "type": "wait",
+          "duration": 30,
+          "message": "Waiting for services to stabilize..."
+        },
+        {
+          "type": "delegate",
+          "agent": "monitoring-agent",
+          "message": "Verify deployment health"
+        }
+      ]
+    },
+    
+    {
+      "name": "test-failure-handler",
+      "description": "Handles test failures",
+      "trigger": {
+        "command": ["npm test", "npm run test:*"],
+        "phase": "after",
+        "onFailure": true
+      },
+      "actions": [
+        {
+          "type": "command",
+          "command": "npm run test:report",
+          "continueOnError": true
+        },
+        {
+          "type": "notify",
+          "message": "❌ Tests failed. Check test report for details."
+        }
+      ]
+    },
+    
+    {
+      "name": "production-safeguard",
+      "description": "Extra checks for production deployments",
+      "trigger": {
+        "command": ["*production*", "*prod*"],
+        "phase": "before"
+      },
+      "actions": [
+        {
+          "type": "confirm",
+          "message": "This is a PRODUCTION deployment. Are you sure you want to proceed?",
+          "requireExplicitYes": true
+        },
+        {
+          "type": "command",
+          "command": "echo 'Production deployment initiated at $(date)' >> deployment.log"
+        }
+      ]
+    },
+    
+    {
+      "name": "auto-format",
+      "description": "Auto-formats code after edits",
+      "trigger": {
+        "tool": ["Edit", "Write"],
+        "filePattern": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+        "phase": "after"
+      },
+      "actions": [
+        {
+          "type": "command",
+          "command": "npx prettier --write $FILE_PATH",
+          "continueOnError": true
+        }
+      ]
+    },
+    
+    {
+      "name": "database-migration-safety",
+      "description": "Backs up database before migrations",
+      "trigger": {
+        "command": ["*migrate*", "*migration*"],
+        "phase": "before"
+      },
+      "actions": [
+        {
+          "type": "command",
+          "command": "npm run db:backup",
+          "failOnError": true,
+          "errorMessage": "Database backup failed. Aborting migration."
+        }
+      ]
+    },
+    
+    {
+      "name": "git-commit-helper",
+      "description": "Helps with conventional commits",
+      "trigger": {
+        "command": ["git commit"],
+        "phase": "before"
+      },
+      "actions": [
+        {
+          "type": "command",
+          "command": "npm run lint:staged",
+          "failOnError": false
+        }
+      ]
+    }
+  ],
+  
+  "globalSettings": {
+    "enableHooks": true,
+    "logLevel": "info",
+    "maxHookExecutionTime": 300,
+    "parallelHooks": false
+  }
+}

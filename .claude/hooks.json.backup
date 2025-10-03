@@ -1,0 +1,211 @@
+{
+  "hooks": [
+    {
+      "name": "pre-deployment-validation",
+      "description": "Validates code before any deployment",
+      "trigger": {
+        "command": ["vercel *", "git push *main*"],
+        "phase": "before"
+      },
+      "actions": [
+        {
+          "type": "command",
+          "command": "git status --porcelain",
+          "failOnError": false,
+          "errorMessage": "Uncommitted changes detected. Consider committing before deploying."
+        },
+        {
+          "type": "command",
+          "command": "npm run build",
+          "failOnError": true,
+          "errorMessage": "Build failed. Fix errors before deploying."
+        }
+      ]
+    },
+
+    {
+      "name": "auto-format",
+      "description": "Auto-formats JavaScript and JSX files after edits",
+      "trigger": {
+        "tool": ["Edit", "Write"],
+        "filePattern": ["*.js", "*.jsx"],
+        "phase": "after"
+      },
+      "actions": [
+        {
+          "type": "command",
+          "command": "npx prettier --write $FILE_PATH",
+          "continueOnError": true
+        }
+      ]
+    },
+
+    {
+      "name": "production-safeguard",
+      "description": "Extra confirmation for production deployments",
+      "trigger": {
+        "command": ["*production*", "git push *main*", "vercel --prod*"],
+        "phase": "before"
+      },
+      "actions": [
+        {
+          "type": "notify",
+          "message": "⚠️ This is a PRODUCTION deployment!"
+        },
+        {
+          "type": "command",
+          "command": "echo 'Production deployment initiated at $(date)' >> deployment.log",
+          "continueOnError": true
+        }
+      ]
+    },
+
+    {
+      "name": "post-deployment-monitoring",
+      "description": "Monitors site health after deployment",
+      "trigger": {
+        "command": ["vercel --prod*", "git push *main*"],
+        "phase": "after",
+        "onSuccess": true
+      },
+      "actions": [
+        {
+          "type": "wait",
+          "duration": 30,
+          "message": "⏳ Waiting for deployment to stabilize..."
+        },
+        {
+          "type": "command",
+          "command": "curl -f https://art23.vercel.app || echo '⚠️ Production site not responding'",
+          "continueOnError": true
+        }
+      ]
+    },
+
+    {
+      "name": "build-failure-handler",
+      "description": "Handles build failures gracefully",
+      "trigger": {
+        "command": ["npm run build", "vite build"],
+        "phase": "after",
+        "onFailure": true
+      },
+      "actions": [
+        {
+          "type": "notify",
+          "message": "❌ Build failed. Check the error messages above."
+        },
+        {
+          "type": "command",
+          "command": "echo 'Build failed at $(date)' >> build-errors.log",
+          "continueOnError": true
+        }
+      ]
+    },
+
+    {
+      "name": "git-commit-helper",
+      "description": "Helps maintain clean git history",
+      "trigger": {
+        "command": ["git commit"],
+        "phase": "before"
+      },
+      "actions": [
+        {
+          "type": "command",
+          "command": "git diff --cached --name-only",
+          "continueOnError": true
+        }
+      ]
+    },
+
+    {
+      "name": "environment-check",
+      "description": "Warns if environment variables are missing",
+      "trigger": {
+        "command": ["npm run build", "npm run dev"],
+        "phase": "before"
+      },
+      "actions": [
+        {
+          "type": "command",
+          "command": "test -f .env || echo '⚠️ No .env file found. This is OK for Vite default setup.'",
+          "continueOnError": true
+        }
+      ]
+    },
+
+    {
+      "name": "dependency-audit",
+      "description": "Checks for security vulnerabilities periodically",
+      "trigger": {
+        "command": ["npm install", "npm update"],
+        "phase": "after"
+      },
+      "actions": [
+        {
+          "type": "command",
+          "command": "npm audit --audit-level=high",
+          "continueOnError": true
+        }
+      ]
+    },
+
+    {
+      "name": "large-file-warning",
+      "description": "Warns about large files being committed",
+      "trigger": {
+        "command": ["git add *"],
+        "phase": "after"
+      },
+      "actions": [
+        {
+          "type": "command",
+          "command": "git diff --cached --stat | grep -E '\\|\\s+[0-9]{4,}\\s+' || true",
+          "continueOnError": true
+        }
+      ]
+    },
+
+    {
+      "name": "preview-deployment-success",
+      "description": "Notifies when preview deployment is ready",
+      "trigger": {
+        "command": ["git push origin *"],
+        "phase": "after",
+        "onSuccess": true
+      },
+      "actions": [
+        {
+          "type": "notify",
+          "message": "✅ Pushed to GitHub. Vercel will create a preview deployment shortly."
+        },
+        {
+          "type": "wait",
+          "duration": 5,
+          "message": "Check Vercel dashboard for preview URL..."
+        }
+      ]
+    }
+  ],
+
+  "globalSettings": {
+    "enableHooks": true,
+    "logLevel": "info",
+    "maxHookExecutionTime": 300,
+    "parallelHooks": false,
+    "continueOnHookFailure": false,
+    "verboseLogging": true
+  },
+
+  "environmentSpecific": {
+    "development": {
+      "enableHooks": true,
+      "strictMode": false
+    },
+    "production": {
+      "enableHooks": true,
+      "strictMode": true
+    }
+  }
+}
