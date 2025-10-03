@@ -10,6 +10,10 @@
   overflow: hidden;
   cursor: pointer;
   background: transparent;
+  /* 3D perspective setup */
+  perspective: 1000px;
+  perspective-origin: center center;
+  transform-style: preserve-3d;
 }
 
 .content {
@@ -21,6 +25,10 @@
   padding: 2rem;
   z-index: 1;
   text-align: center;
+  /* 3D enhancements for content layers */
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
 }
 
 .pixelGrid {
@@ -30,11 +38,25 @@
   flex-wrap: wrap;
   z-index: 2;
   pointer-events: none;
+  /* 3D perspective for pixel grid */
+  perspective: 1200px;
+  perspective-origin: center center;
+  transform-style: preserve-3d;
 }
 
 .pixel {
   display: block;
-  will-change: opacity;
+  /* GPU acceleration and 3D properties */
+  will-change: transform, opacity;
+  transform: translate3d(0, 0, 0); /* GPU trigger */
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  /* Visual enhancement - subtle glow */
+  box-shadow:
+    0 2px 8px rgba(114, 189, 194, 0.2),
+    0 0 12px rgba(114, 189, 194, 0.15);
+  filter: brightness(1.05);
+  border-radius: 1px; /* Slight rounding for smoother look */
 }
 
 /* Mobile responsiveness */

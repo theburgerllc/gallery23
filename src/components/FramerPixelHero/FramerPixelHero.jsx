@@ -79,35 +79,81 @@ export default function FramerPixelHero({
     return [];
   }, [dimensions, gridSize]);
 
-  // Memoize pixel blocks generation
+  // Memoize pixel blocks generation with 3D effects
   const pixelBlocks = useMemo(() => {
     const isMobile = dimensions.width < 768;
     const effectiveGridSize = isMobile ? gridSize * 1.5 : gridSize;
+    const numColumns = Math.ceil(dimensions.width / effectiveGridSize);
 
-    return shuffledIndexes.map((randomIndex, index) => (
-      <motion.div
-        key={index}
-        className={styles.pixel}
-        style={{
-          width: effectiveGridSize,
-          height: effectiveGridSize,
-          backgroundColor: pixelColor,
-        }}
-        variants={{
-          initial: { opacity: 0 },
-          open: { opacity: 1 },
-          closed: { opacity: 0 },
-        }}
-        initial="initial"
-        animate={isHovered ? 'open' : 'closed'}
-        custom={randomIndex}
-        transition={{
-          duration: prefersReducedMotion ? 0.3 : 0,
-          delay: prefersReducedMotion ? 0 : 0.015 * randomIndex,
-        }}
-      />
-    ));
-  }, [shuffledIndexes, isHovered, gridSize, pixelColor, dimensions.width, prefersReducedMotion]);
+    return shuffledIndexes.map((randomIndex, index) => {
+      // Generate random 3D variations for each pixel
+      const randomRotationX = (Math.random() - 0.5) * 180;
+      const randomRotationY = (Math.random() - 0.5) * 180;
+      const randomRotationZ = (Math.random() - 0.5) * 90;
+      const randomScale = 0.9 + Math.random() * 0.2; // 0.9-1.1
+
+      // Calculate position for distance-based delay (wave effect)
+      const colIndex = index % numColumns;
+      const rowIndex = Math.floor(index / numColumns);
+      const numRows = Math.ceil(dimensions.height / effectiveGridSize);
+      const distanceFromCenter = Math.hypot(
+        colIndex - numColumns / 2,
+        rowIndex - numRows / 2
+      );
+
+      return (
+        <motion.div
+          key={index}
+          className={styles.pixel}
+          style={{
+            width: effectiveGridSize,
+            height: effectiveGridSize,
+            backgroundColor: pixelColor,
+          }}
+          variants={{
+            initial: {
+              opacity: 0,
+              scale: 0,
+              rotateX: randomRotationX,
+              rotateY: randomRotationY,
+              rotateZ: randomRotationZ,
+              z: -100,
+            },
+            open: {
+              opacity: 1,
+              scale: randomScale,
+              rotateX: 0,
+              rotateY: 0,
+              rotateZ: 0,
+              z: 0,
+            },
+            closed: {
+              opacity: 0,
+              scale: 0.7,
+              rotateX: -randomRotationX,
+              rotateY: -randomRotationY,
+              rotateZ: -randomRotationZ,
+              z: -100,
+            },
+          }}
+          initial="initial"
+          animate={isHovered ? 'open' : 'closed'}
+          custom={randomIndex}
+          transition={
+            prefersReducedMotion
+              ? { duration: 0.3, delay: 0 }
+              : {
+                  type: 'spring',
+                  stiffness: 300,
+                  damping: 20,
+                  mass: 0.5,
+                  delay: 0.005 * distanceFromCenter,
+                }
+          }
+        />
+      );
+    });
+  }, [shuffledIndexes, isHovered, gridSize, pixelColor, dimensions, prefersReducedMotion]);
 
   // Memoize event handlers
   const handleMouseEnter = useCallback(() => {
@@ -140,12 +186,26 @@ export default function FramerPixelHero({
       onClick={handleClick}
       onKeyDown={handleKeyPress}
     >
-      {/* First Content - Initial State */}
+      {/* First Content - Initial State with 3D parallax */}
       <motion.div
         className={styles.content}
-        initial={{ opacity: 1 }}
-        animate={{ opacity: isHovered ? 0 : 1 }}
-        transition={{ duration: 0.3, delay: isHovered ? 0 : 0.3 }}
+        initial={{ opacity: 1, z: 0, scale: 1, rotateX: 0 }}
+        animate={{
+          opacity: isHovered ? 0 : 1,
+          z: isHovered ? -50 : 0,
+          scale: isHovered ? 0.95 : 1,
+          rotateX: isHovered ? -3 : 0,
+        }}
+        transition={
+          prefersReducedMotion
+            ? { duration: 0.3 }
+            : {
+                type: 'spring',
+                stiffness: 200,
+                damping: 25,
+                delay: isHovered ? 0 : 0.3,
+              }
+        }
       >
         {firstContent}
       </motion.div>
@@ -155,12 +215,26 @@ export default function FramerPixelHero({
         {dimensions.width > 0 && pixelBlocks}
       </div>
 
-      {/* Second Content - Revealed State */}
+      {/* Second Content - Revealed State with 3D entrance */}
       <motion.div
         className={styles.content}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isHovered ? 1 : 0 }}
-        transition={{ duration: 0.3, delay: isHovered ? 0.3 : 0 }}
+        initial={{ opacity: 0, z: -100, scale: 0.9, rotateX: 10 }}
+        animate={{
+          opacity: isHovered ? 1 : 0,
+          z: isHovered ? 0 : -100,
+          scale: isHovered ? 1 : 0.9,
+          rotateX: isHovered ? 0 : 10,
+        }}
+        transition={
+          prefersReducedMotion
+            ? { duration: 0.3 }
+            : {
+                type: 'spring',
+                stiffness: 200,
+                damping: 25,
+                delay: isHovered ? 0.4 : 0,
+              }
+        }
         style={{ pointerEvents: isHovered ? 'auto' : 'none' }}
       >
         {secondContent}
