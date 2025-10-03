@@ -170,6 +170,15 @@ getCartCount()
 - No local image assets
 - Fonts loaded from Google Fonts CDN
 
+**Recent Image Updates (2025-10-03):**
+- Fixed broken artwork images in Home.jsx and Gallery.jsx
+- Replaced 3 missing images with working Unsplash URLs:
+  - "Geometric Harmony": photo-1557672172-298e090bd0f1 (geometric abstract art)
+  - "Urban Lens": photo-1477959858617-67f85cf4f1df (urban photography)
+  - "Color Symphony": photo-1515405295579-ba7b45403062 (colorful abstract)
+- All images use format: `https://images.unsplash.com/photo-[ID]?w=800&q=80`
+- Images are optimized for web (800px width, 80% quality)
+
 When modifying this codebase:
 1. Follow existing component patterns and file structure
 2. Use the established design system colors and shadows
@@ -257,6 +266,21 @@ Use the test runner agent to run validation checks
 - Running build validation
 - Creating test examples
 
+#### 6. Asset Manager (`asset-manager`)
+Manages digital assets including images, optimization, and CDN integration.
+
+**Usage:**
+```
+Use the asset manager agent to find and fix missing images
+```
+
+**Responsibilities:**
+- Finding replacement images from Unsplash
+- Optimizing image URLs and parameters
+- Updating image references in code
+- Verifying image loading and quality
+- Managing image metadata
+
 ### Slash Commands
 
 #### `/deploy-preview`
@@ -323,6 +347,27 @@ Instantly rolls back production to previous version.
 3. Investigate root cause
 4. Fix in preview
 5. Redeploy when ready
+
+### Deployment History
+
+#### 2025-10-03 - Image Fix Deployment
+- **Commit**: `ebf00e1` - fix: replace broken artwork images with working Unsplash URLs
+- **Changes**:
+  - Replaced 3 broken artwork images (Geometric Harmony, Urban Lens, Color Symphony)
+  - Updated image URLs in Home.jsx and Gallery.jsx
+  - All images verified working and optimized
+- **Production URL**: https://art2three.vercel.app
+- **Deployment ID**: art2three-jb84up2lr
+- **Status**: ✅ Successful
+- **Build Time**: ~3 seconds
+
+#### 2025-10-03 - Initial Deployment
+- **Commit**: `36c3f89` - Initial commit: Art23 Gallery website ready for Vercel deployment
+- **Changes**: Complete gallery website with e-commerce functionality
+- **Production URL**: https://art2three.vercel.app
+- **Deployment ID**: art2three-pxy18x6am
+- **Status**: ✅ Successful
+- **Build Time**: ~13 seconds
 
 ### Environment Setup
 
