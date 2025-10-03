@@ -442,7 +442,7 @@ const Blog = () => {
       excerpt: 'Transform your passion into a viable career with practical advice on pricing, marketing, and building a loyal collector base.',
       content: `
         <div class="space-y-6">
-          <img src="https://images.unsplash.com/photo-1577083552431-6e5fd01988ec?w=1200&h=600&fit=crop" alt="Sustainable Art Career" class="w-full rounded-2xl shadow-neu-lg" />
+          <img src="https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=1200&h=600&fit=crop" alt="Sustainable Art Career" class="w-full rounded-2xl shadow-neu-lg" />
 
           <p class="text-lg text-gray-300 leading-relaxed">
             Creating great art is only half the equation. Building a sustainable career requires business acumen, strategic planning, and consistent effort. Here's how to turn your artistic passion into a thriving, long-term career.
@@ -571,7 +571,7 @@ const Blog = () => {
           </p>
         </div>
       `,
-      image: 'https://images.unsplash.com/photo-1577083552431-6e5fd01988ec?w=800&h=500&fit=crop',
+      image: 'https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=800&h=500&fit=crop',
       author: 'David Chen',
       date: '2024-02-10',
       category: 'Resources',

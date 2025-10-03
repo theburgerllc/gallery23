@@ -58,7 +58,7 @@ const About = () => {
     {
       name: 'Khalaf "Leaf" Jerry',
       role: 'Founder & Visionary',
-      image: '/images/gallery23-logo-cropped.jpg',
+      image: '/images/team-photo.jpg',
       bio: 'With an unwavering passion for American creativity, Leaf envisions gallerytwentythree as a transformative platform where every artist—regardless of background or location—finds the support, community, and resources to flourish and share their unique voice with the world.'
     }
   ];
