@@ -1,0 +1,55 @@
+/* src/components/FramerPixelHero/FramerPixelHero.module.css */
+
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  background: transparent;
+}
+
+.content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  z-index: 1;
+  text-align: center;
+}
+
+.pixelGrid {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-wrap: wrap;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.pixel {
+  display: block;
+  will-change: opacity;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .hero {
+    min-height: 100vh;
+  }
+
+  .content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .content {
+    padding: 1rem;
+  }
+}

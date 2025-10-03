@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles, Eye, Heart } from 'lucide-react';
-import PixelHero from '../components/PixelHero/PixelHero';
+import FramerPixelHero from '../components/FramerPixelHero/FramerPixelHero';
 
 const Home = () => {
   const featuredWorks = [
@@ -52,32 +52,19 @@ const Home = () => {
 
   return (
     <div className="relative">
-      {/* PixelReveal Hero Section */}
-      <PixelHero
-        imageSrc="/images/hero-bg.webp"
-        mode="in-view"
-        gridSize={14}
-        duration={1.0}
-        delay={0.05}
-        replay={false}
+      {/* Framer Pixel Transition Hero */}
+      <FramerPixelHero
+        gridSize={30}
+        pixelColor="#72BDC2"
+        animationDuration={0.6}
         firstContent={
           <div className="text-center max-w-4xl mx-auto">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-6xl md:text-8xl lg:text-9xl font-bold gradient-text leading-none tracking-tighter"
-            >
+            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold gradient-text leading-none tracking-tighter">
               gallerytwentythree
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-              className="mt-6 text-xl md:text-2xl text-primary-cyan/90"
-            >
+            </h1>
+            <p className="mt-6 text-xl md:text-2xl text-primary-cyan/90">
               Art that builds bridges
-            </motion.p>
+            </p>
           </div>
         }
         secondContent={
@@ -91,14 +78,10 @@ const Home = () => {
               Curated works & stories from American artists
             </p>
             <Link to="/gallery">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="glass-button inline-flex items-center space-x-2 text-lg px-8 py-4"
-              >
+              <button className="glass-button inline-flex items-center space-x-2 text-lg px-8 py-4">
                 <span>Explore Gallery</span>
                 <ArrowRight className="w-6 h-6" />
-              </motion.button>
+              </button>
             </Link>
           </div>
         }
