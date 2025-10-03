@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles, Eye, Heart } from 'lucide-react';
-import HeroSection3D from '../components/HeroSection3D';
+import PixelHero from '../components/PixelHero/PixelHero';
 
 const Home = () => {
   const featuredWorks = [
@@ -52,8 +52,57 @@ const Home = () => {
 
   return (
     <div className="relative">
-      {/* 3D Animated Hero Section */}
-      <HeroSection3D />
+      {/* PixelReveal Hero Section */}
+      <PixelHero
+        imageSrc="/images/hero-bg.webp"
+        mode="in-view"
+        gridSize={14}
+        duration={1.0}
+        delay={0.05}
+        replay={false}
+        firstContent={
+          <div className="text-center max-w-4xl mx-auto">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-6xl md:text-8xl lg:text-9xl font-bold gradient-text leading-none tracking-tighter"
+            >
+              gallerytwentythree
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="mt-6 text-xl md:text-2xl text-primary-cyan/90"
+            >
+              Art that builds bridges
+            </motion.p>
+          </div>
+        }
+        secondContent={
+          <div className="text-center max-w-4xl mx-auto">
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
+              Welcome to the
+              <br />
+              <span className="gradient-text">New Era of Art</span>
+            </h2>
+            <p className="text-lg md:text-xl text-white/80 mb-8 max-w-2xl mx-auto">
+              Curated works & stories from American artists
+            </p>
+            <Link to="/gallery">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="glass-button inline-flex items-center space-x-2 text-lg px-8 py-4"
+              >
+                <span>Explore Gallery</span>
+                <ArrowRight className="w-6 h-6" />
+              </motion.button>
+            </Link>
+          </div>
+        }
+      />
 
       {/* Stats Section */}
       <section className="py-20 relative">

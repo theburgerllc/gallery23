@@ -1,0 +1,149 @@
+/* src/components/PixelHero/PixelHero.module.css */
+:root {
+  --pixel-duration: 0.9s;
+  --pixel-easing: cubic-bezier(.2,.8,.2,1);
+  --pixel-grid: 12;
+  --pixel-delay: 0s;
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  min-height: 100vh;
+  display: block;
+  background: transparent;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hero:focus {
+  outline: 3px solid rgba(114, 189, 194, 0.3);
+  outline-offset: 4px;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.first {
+  z-index: 5;
+  transition: opacity 300ms linear;
+}
+
+.second {
+  z-index: 10;
+  pointer-events: none;
+}
+
+.pixelCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 12;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  background: transparent;
+}
+
+.revealedContent {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--pixel-duration) var(--pixel-easing) var(--pixel-delay);
+  pointer-events: auto;
+}
+
+.revealed .revealedContent,
+.revealedContent.revealed {
+  opacity: 1;
+}
+
+.hiddenImg {
+  display: none;
+  visibility: hidden;
+}
+
+.idle .first {
+  opacity: 1;
+}
+.revealed .first {
+  opacity: 0;
+  transition: opacity calc(var(--pixel-duration) / 1.6) var(--pixel-easing);
+}
+
+.revealed .pixelCanvas {
+  opacity: 1;
+  transition: opacity calc(var(--pixel-duration) / 1.2) var(--pixel-easing) var(--pixel-delay);
+}
+
+/* Reduced motion fallback - crossfade */
+.reduced .first {
+  transition: opacity 300ms linear;
+}
+.reduced .revealedContent {
+  transition: opacity 300ms linear;
+}
+
+/* Grid fallback for non-image content */
+.gridMask {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--pixel-grid), 1fr);
+  grid-template-rows: repeat(var(--pixel-grid), 1fr);
+  z-index: 15;
+}
+
+.gridCell {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: #21221F; /* primary-dark */
+  opacity: 1;
+  transform-origin: center;
+  transition: opacity var(--pixel-duration) var(--pixel-easing) var(--pixel-delay),
+    transform calc(var(--pixel-duration) * 0.95) var(--pixel-easing) var(--pixel-delay);
+  will-change: opacity, transform;
+}
+
+/* On reveal, hide grid cells */
+.revealed .gridCell {
+  opacity: 0;
+  transform: scale(0.85) translateZ(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero {
+    min-height: 100vh;
+  }
+
+  .layer {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .layer {
+    padding: 1rem;
+  }
+}
+
+/* Ensure children are above mask when needed */
+.layer > * {
+  position: relative;
+  z-index: 30;
+}
