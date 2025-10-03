@@ -171,13 +171,18 @@ getCartCount()
 - Fonts loaded from Google Fonts CDN
 
 **Recent Image Updates (2025-10-03):**
-- Fixed broken artwork images in Home.jsx and Gallery.jsx
-- Replaced 3 missing images with working Unsplash URLs:
+- Fixed broken artwork images across multiple pages (Home.jsx, Gallery.jsx, Shop.jsx)
+- Replaced 3 missing artwork images with working Unsplash URLs:
   - "Geometric Harmony": photo-1557672172-298e090bd0f1 (geometric abstract art)
   - "Urban Lens": photo-1477959858617-67f85cf4f1df (urban photography)
   - "Color Symphony": photo-1515405295579-ba7b45403062 (colorful abstract)
-- All images use format: `https://images.unsplash.com/photo-[ID]?w=800&q=80`
-- Images are optimized for web (800px width, 80% quality)
+- Updated blog post thumbnail for "Building a Sustainable Art Career":
+  - New image: photo-1452860606245-08befc0ff44b (professional career development theme)
+- Added custom team photo:
+  - File: `/public/images/team-photo.jpg` (115KB)
+  - Updated About.jsx to display founder photo instead of logo
+- All images use format: `https://images.unsplash.com/photo-[ID]?w=800&q=80` (artworks) or `?w=1200&h=600&fit=crop` (blog headers)
+- Images are optimized for web (800px-1200px width, high quality)
 
 When modifying this codebase:
 1. Follow existing component patterns and file structure
@@ -349,6 +354,25 @@ Instantly rolls back production to previous version.
 5. Redeploy when ready
 
 ### Deployment History
+
+#### 2025-10-03 - Complete Image Update Deployment
+- **Commit**: `1ae7210` - fix: update all missing and broken images across Shop, Blog, and About pages
+- **Changes**:
+  - **Shop.jsx**: Fixed 3 broken artwork images (Geometric Harmony, Urban Lens, Color Symphony)
+  - **Blog.jsx**: Replaced "Building a Sustainable Art Career" thumbnail with professional career development image
+  - **About.jsx**: Updated team photo from logo to actual founder photo (team-photo.jpg)
+  - All images verified working and optimized for web
+- **Production URL**: https://art2three.vercel.app
+- **Deployment ID**: art2three-arsaf8on5
+- **Status**: ✅ Successful
+- **Build Time**: ~10 seconds
+
+#### 2025-10-03 - Documentation Update
+- **Commit**: `dde6aa0` - docs: update CLAUDE.md with image fix deployment documentation
+- **Changes**: Added deployment history, asset manager agent docs, image optimization guidelines
+- **Production URL**: https://art2three.vercel.app
+- **Deployment ID**: art2three-4r52kyujb
+- **Status**: ✅ Successful
 
 #### 2025-10-03 - Image Fix Deployment
 - **Commit**: `ebf00e1` - fix: replace broken artwork images with working Unsplash URLs
