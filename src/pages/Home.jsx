@@ -37,7 +37,7 @@ const Home = () => {
       title: 'Geometric Harmony',
       artist: 'Alex Thompson',
       category: 'Modern',
-      image: 'https://images.unsplash.com/photo-1549887534-1541e9326642?w=800&q=80',
+      image: 'https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=800&q=80',
       views: 1567,
       likes: 423
     }

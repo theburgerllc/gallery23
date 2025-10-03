@@ -45,7 +45,7 @@ const Gallery = () => {
       title: 'Geometric Harmony',
       artist: 'Alex Thompson',
       category: 'Modern',
-      image: 'https://images.unsplash.com/photo-1549887534-1541e9326642?w=800&q=80',
+      image: 'https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=800&q=80',
       views: 1567,
       likes: 423,
       description: 'A bold statement in geometric abstraction and color theory.'
@@ -85,7 +85,7 @@ const Gallery = () => {
       title: 'Urban Lens',
       artist: 'David Chen',
       category: 'Photography',
-      image: 'https://images.unsplash.com/photo-1569172122301-bc5008bc09c5?w=800&q=80',
+      image: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&q=80',
       views: 1678,
       likes: 412,
       description: 'Capturing the raw beauty of city life through a unique perspective.'
@@ -95,7 +95,7 @@ const Gallery = () => {
       title: 'Color Symphony',
       artist: 'Aria Johnson',
       category: 'Abstract',
-      image: 'https://images.unsplash.com/photo-1551732998-9fd2c90e42cf?w=800&q=80',
+      image: 'https://images.unsplash.com/photo-1515405295579-ba7b45403062?w=800&q=80',
       views: 2890,
       likes: 678,
       description: 'A vibrant celebration of color and movement.'
